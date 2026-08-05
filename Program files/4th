@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+
+void validateOperators(char *input) {
+    int i = 0;
+    int length = strlen(input);
+
+    printf("\n--- OPERATOR ANALYSIS ---\n");
+
+    while (i < length) {
+        // Skip spaces, tabs, and newlines
+        if (input[i] == ' ' || input[i] == '\t' || input[i] == '\n') {
+            i++;
+            continue;
+        }
+
+        // Validate and identify basic arithmetic operators
+        switch (input[i]) {
+            case '+':
+                printf("Valid Operator : + (Addition)\n");
+                break;
+            case '-':
+                printf("Valid Operator : - (Subtraction)\n");
+                break;
+            case '*':
+                printf("Valid Operator : * (Multiplication)\n");
+                break;
+            case '/':
+                printf("Valid Operator : / (Division)\n");
+                break;
+            default:
+                // Ignore operands and other non-operator symbols
+                break;
+        }
+        i++;
+    }
+}
+
+int main() {
+    char inputCode[] = "a + b * c - d / 5";
+
+    printf("Input Expression: %s\n", inputCode);
+    validateOperators(inputCode);
+
+    return 0;
+}
