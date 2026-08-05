@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_IDENT_LEN 31
+
+// Function to check if a character is an operator
+int isOperator(char ch) {
+    char operators[] = "+-*/%=<>!&|";
+    for (int i = 0; i < strlen(operators); i++) {
+        if (ch == operators[i]) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+// Lexical Analyzer Function
+void analyze(char *input) {
+    int i = 0;
+    int length = strlen(input);
+
+    printf("\n--- TOKEN ANALYSIS ---\n");
+
+    while (i < length) {
+        // 1. Ignore Whitespaces, Tabs, and Newlines
+        if (input[i] == ' ' || input[i] == '\t' || input[i] == '\n') {
+            i++;
+            continue;
+        }
+
+        // 2. Ignore Single-line Comments (//)
+        if (input[i] == '/' && input[i + 1] == '/') {
+            while (i < length && input[i] != '\n') {
+                i++;
+            }
+            continue;
+        }
+
+        // 3. Identify Identifiers (Must start with a letter or underscore)
+        if (isalpha(input[i]) || input[i] == '_') {
+            char buffer[MAX_IDENT_LEN + 1];
+            int buf_idx = 0;
+
+            while (i < length && (isalnum(input[i]) || input[i] == '_')) {
+                // Restrict identifier length to MAX_IDENT_LEN
+                if (buf_idx < MAX_IDENT_LEN) {
+                    buffer[buf_idx++] = input[i];
+                }
+                i++;
+            }
+            buffer[buf_idx] = '\0';
+            printf("Identifier : %s\n", buffer);
+            continue;
+        }
+
+        // 4. Identify Constants (Numeric digits)
+        if (isdigit(input[i])) {
+            char buffer[100];
+            int buf_idx = 0;
+
+            while (i < length && isdigit(input[i])) {
+                buffer[buf_idx++] = input[i];
+                i++;
+            }
+            buffer[buf_idx] = '\0';
+            printf("Constant   : %s\n", buffer);
+            continue;
+        }
+
+        // 5. Identify Operators
+        if (isOperator(input[i])) {
+            printf("Operator   : %c\n", input[i]);
+            i++;
+            continue;
+        }
+
+        // Ignore delimiters like ';', '(', ')', '{', '}' if present
+        i++;
+    }
+}
+
+int main() {
+    // Sample code input to analyze
+    char inputCode[] = "int sum = a1 + 50; // Calculate sum\n count = count - 5;";
+
+    printf("Input Code Segment:\n%s\n", inputCode);
+    
+    analyze(inputCode);
+
+    return 0;
+}
