@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int main()
+{
+    printf("Given Grammar:\n");
+    printf("S -> AaAb | BbBa\n");
+    printf("A -> epsilon\n");
+    printf("B -> epsilon\n\n");
+
+    printf("FIRST(A) = { epsilon }\n");
+    printf("FIRST(B) = { epsilon }\n");
+
+    /*
+       S -> AaAb
+
+       Since A -> epsilon,
+       the first symbol after A is 'a'.
+
+       Therefore, 'a' belongs to FIRST(S).
+
+       S -> BbBa
+
+       Since B -> epsilon,
+       the first symbol after B is 'b'.
+
+       Therefore, 'b' belongs to FIRST(S).
+    */
+
+    printf("FIRST(S) = { a, b }\n");
+
+    return 0;
+}
