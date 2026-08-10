@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <string.h>
+
+char input[100];
+int pos = 0;
+int error = 0;
+
+void E();
+void Eprime();
+void T();
+void Tprime();
+void F();
+
+void match(char ch)
+{
+    if (input[pos] == ch)
+    {
+        pos++;
+    }
+    else
+    {
+        error = 1;
+    }
+}
+
+void E()
+{
+    T();
+    Eprime();
+}
+
+void Eprime()
+{
+    if (input[pos] == '+')
+    {
+        match('+');
+        T();
+        Eprime();
+    }
+}
+
+void T()
+{
+    F();
+    Tprime();
+}
+
+void Tprime()
+{
+    if (input[pos] == '*')
+    {
+        match('*');
+        F();
+        Tprime();
+    }
+}
+
+void F()
+{
+    if (input[pos] == 'i' &&
+        input[pos + 1] == 'd')
+    {
+        pos = pos + 2;
+    }
+    else if (input[pos] == '(')
+    {
+        match('(');
+        E();
+        match(')');
+    }
+    else
+    {
+        error = 1;
+    }
+}
+
+int main()
+{
+    printf("Enter the expression: ");
+    scanf("%s", input);
+
+    E();
+
+    if (error == 0 && input[pos] == '\0')
+    {
+        printf("Valid Expression\n");
+    }
+    else
+    {
+        printf("Invalid Expression\n");
+    }
+
+    return 0;
+}
